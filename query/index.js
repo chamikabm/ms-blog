@@ -3,14 +3,31 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
+app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/posts', (req, res) => {
+const posts = {};
 
+app.get('/posts', (req, res) => {
+  res.send(posts);
 });
 
 app.post('/events', (req, res) => {
-  console.log('Received Event. Event : ', req.body.type);
+  const { type, data } = req.body;
+  console.log('Received Event. Event : ', type);
+
+  if(type === 'PostCreated') {
+    const { id, title } = data;
+    posts[id] = { id, title, comments: [] };
+  }
+
+  if(type === 'CommentCreated') {
+    const { id, content, postId } = data;
+    const post = posts[postId];
+    post.comments.push({ id, content });
+
+  }
+
   res.send({})
 });
 

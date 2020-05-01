@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: posts
-          image: chamika/posts:0.0.1
+          image: chamika/posts:latest # We can either put latest or keep blank, If blank K8 will always look for latest image in local or then in docker hub.
 
 

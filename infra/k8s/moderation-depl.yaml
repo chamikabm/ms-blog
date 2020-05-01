@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moderation
+  template:
+    metadata:
+      labels:
+        app: moderation
+    spec:
+      containers:
+        - name: moderation
+          image: chamika/moderation # We can either put moderation:latest or keep blank, If blank K8 will always look for latest image in local or then in docker hub.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  type: ClusterIP # Since K8 default service type is "ClusterIP", you don't need to specify the type specifically, you can remove this line if you need.
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003 # Exposed port to outside
+      targetPort: 4003 # Internal port to direct the outside traffic. (i.e : App exported port.)
+
+

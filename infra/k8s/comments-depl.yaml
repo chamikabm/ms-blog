@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comments
+  template:
+    metadata:
+      labels:
+        app: comments
+    spec:
+      containers:
+        - name: comments
+          image: chamika/comments # We can either put comments:latest or keep blank, If blank K8 will always look for latest image in local or then in docker hub.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-srv
+spec:
+  type: ClusterIP # Since K8 default service type is "ClusterIP", you don't need to specify the type specifically, you can remove this line if you need.
+  selector:
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      port: 4001 # Exposed port to outside
+      targetPort: 4001 # Internal port to direct the outside traffic. (i.e : App exported port.)
+
+

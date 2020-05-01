@@ -1,0 +1,8 @@
+apiVersion: v1 # Specifies the version of the kubernetes.
+kind: Pod # Specifies type of object we want to create.
+metadata: # Config options for the object we are about to create.
+  name: posts # When the pod is created, give this specified name to it.
+spec: # Attributes we want to apply to the object we are about to create.
+  containers: # We can create as many containers inside a single Pod
+    - name: posts # Make a container with a name of 'posts'
+      image: chamika/posts:0.0.1 # The exact image to use.

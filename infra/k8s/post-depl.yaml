@@ -15,5 +15,19 @@ spec:
       containers:
         - name: posts
           image: chamika/posts:latest # We can either put latest or keep blank, If blank K8 will always look for latest image in local or then in docker hub.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: posts-clusterip-srv
+spec:
+  type: ClusterIP # Since K8 default service type is "ClusterIP", you don't need to specify the type specifically, you can remove this line if you need.
+  selector:
+    app: posts
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 4000 # Exposed port to outside
+      targetPort: 4000 # Internal port to direct the outside traffic. (i.e : App exported port.)
 
 

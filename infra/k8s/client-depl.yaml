@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: chamika/client # We can either put client:latest or keep blank, If blank K8 will always look for latest image in local or then in docker hub.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  type: ClusterIP # Since K8 default service type is "ClusterIP", you don't need to specify the type specifically, you can remove this line if you need.
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000 # Exposed port to outside
+      targetPort: 3000 # Internal port to direct the outside traffic. (i.e : App exported port.)
+
+
